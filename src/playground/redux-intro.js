@@ -1,63 +1,54 @@
-import { createStore } from 'redux';
+import {createStore} from 'redux';
 
+const incrementCount = ({
+  incrementBy = 1
+} = {}) => ({type: 'INCREMENT', incrementBy});
 
-const incrementCount = ({incrementBy = 1} = {}) => ({
-  type: 'INCREMENT',
-  incrementBy
-});
+const decrementCount = ({
+  decrementBy = 1
+} = {}) => ({type: 'DECREMENT', decrementBy});
 
-const decrementCount = ({decrementBy = 1} = {}) => ({
-  type: 'DECREMENT',
-  decrementBy
-});
+const setCount = ({count}) => ({type: 'SET', count})
 
-const setCount = ({count}) => ({
-  type: 'SET',
-  count
-})
+const resetCount = () => ({type: 'RESET'})
 
-const resetCount = () => ({
-  type: 'RESET',
-})
+// Reducer 1.) Pure function - output only determined by the input, doesnt
+// change anything outside of the function scope 2.) Never change state or
+// action directly
 
-const countReducer = (state = { count: 0 }, action) => {
-  switch(action.type) {
+const countReducer = (state = {
+  count: 0
+}, action) => {
+  switch (action.type) {
 
-    case 'INCREMENT' : 
+    case 'INCREMENT':
       return {
-      count: state.count + action.incrementBy
-    };
+        count: state.count + action.incrementBy
+      };
 
-    case 'DECREMENT' : 
-    return {
-      count: state.count - action.decrementBy
-    };
+    case 'DECREMENT':
+      return {
+        count: state.count - action.decrementBy
+      };
 
-    case 'SET': 
-    return {
-      count: action.count
-    };
+    case 'SET':
+      return {count: action.count};
 
-    case 'RESET' : return {
-      count: 0
-    };
+    case 'RESET':
+      return {count: 0};
 
-    default : return state;
+    default:
+      return state;
   }
 }
 
 const store = createStore(countReducer);
 
-// console.log(store.getState());
-
-const unsubscribe = store.subscribe(() => { 
+const unsubscribe = store.subscribe(() => {
   console.log(store.getState())
 })
 
-// store.dispatch({
-//   type: 'INCREMENT',
-//   incrementBy: 5
-// });
+// store.dispatch({   type: 'INCREMENT',   incrementBy: 5 });
 
 store.dispatch(incrementCount({incrementBy: 5}))
 
